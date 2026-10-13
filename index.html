@@ -26,17 +26,16 @@ a{color:inherit}
 nav{position:sticky;top:0;z-index:20;background:rgba(19,50,31,.96);backdrop-filter:blur(6px);color:var(--creme)}
 nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
 .logo{display:flex;align-items:center;gap:10px;font-family:"Fraunces",serif;font-weight:700;font-size:1.15rem;text-decoration:none}
-.logo svg{width:26px;height:26px}
 nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0}
 nav ul a{text-decoration:none;font-weight:600;font-size:.95rem;opacity:.85}
 nav ul a:hover{opacity:1;color:var(--gold-hell)}
-@media(max-width:640px){nav ul{gap:14px}nav ul li:nth-child(4){display:none}.logo span{display:none}}
+@media(max-width:640px){nav .wrap{justify-content:center}nav ul{gap:18px}nav ul li:nth-child(4){display:none}.logo{display:none}}
 
 /* Hero */
 .hero{background:radial-gradient(ellipse at 30% 20%,var(--filz-hell),var(--filz) 55%,var(--filz-dunkel));color:var(--creme);padding:72px 0 88px;position:relative;overflow:hidden}
 .hero::after{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");pointer-events:none}
 .hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center}
-@media(max-width:820px){.hero .wrap{grid-template-columns:1fr}.karten{display:none}.karten.mit-pokal{display:flex;justify-content:center;align-items:flex-start;height:auto!important;margin-top:10px}.karten.mit-pokal .karte{display:none}.karten.mit-pokal .pokal{position:static;transform:rotate(2deg)}}
+@media(max-width:820px){.hero .wrap{grid-template-columns:1fr}.karten.mit-pokal{margin-top:10px}.karten .pokal{width:220px;transform:rotate(2deg)}}
 .eyebrow{display:inline-block;text-transform:uppercase;letter-spacing:.16em;font-size:.8rem;font-weight:700;color:var(--gold-hell);border:1px solid rgba(232,211,156,.4);padding:5px 12px;border-radius:99px;margin-bottom:18px}
 .hero h1{font-size:clamp(2.6rem,7vw,4.6rem);font-weight:900;letter-spacing:-.02em}
 .hero h1 em{font-style:normal;color:var(--gold)}
@@ -50,22 +49,12 @@ nav ul a:hover{opacity:1;color:var(--gold-hell)}
 .btn.ghost{background:transparent;color:var(--creme);border:1px solid rgba(255,255,255,.35);margin-left:8px}
 .btn.ghost:hover{background:rgba(255,255,255,.08)}
 
-/* Spielkarten-Deko */
-.karten{position:relative;height:300px}
-.karten.mit-pokal{height:380px}
-.karten.mit-pokal .karte:nth-child(1){left:0;top:10px}
-.karten.mit-pokal .karte:nth-child(2){left:17%;top:0}
-.karten.mit-pokal .karte:nth-child(3){left:34%;top:20px}
-.pokal{position:absolute;right:0;bottom:0;z-index:3;margin:0;width:220px;background:var(--papier);padding:8px 8px 10px;border-radius:10px;box-shadow:0 24px 50px -12px rgba(0,0,0,.6);transform:rotate(4deg)}
-.pokal img{display:block;width:100%;max-height:300px;object-fit:cover;border-radius:6px;cursor:zoom-in}
+/* Pokal im Hero */
+.karten{display:none}
+.karten.mit-pokal{display:flex;justify-content:center;align-items:center}
+.pokal{position:relative;margin:0;width:260px;background:var(--papier);padding:8px 8px 10px;border-radius:10px;box-shadow:0 24px 50px -12px rgba(0,0,0,.6);transform:rotate(4deg)}
+.pokal img{display:block;width:100%;max-height:360px;object-fit:cover;border-radius:6px;cursor:zoom-in}
 .pokal figcaption{text-align:center;font-family:"Fraunces",serif;font-weight:700;color:var(--filz);font-size:.95rem;padding-top:8px}
-.karte{position:absolute;width:150px;height:220px;background:var(--papier);border-radius:12px;box-shadow:0 18px 40px -10px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;border:6px solid var(--papier);outline:1px solid var(--linie)}
-.karte svg{width:70px;height:70px}
-.karte .ecke{position:absolute;font-family:"Fraunces",serif;font-weight:900;font-size:1.3rem;color:var(--tinte)}
-.karte .ecke.o{top:8px;left:12px}.karte .ecke.u{bottom:8px;right:12px;transform:rotate(180deg)}
-.karte:nth-child(1){left:10%;top:30px;transform:rotate(-14deg)}
-.karte:nth-child(2){left:32%;top:10px;transform:rotate(-2deg)}
-.karte:nth-child(3){left:54%;top:36px;transform:rotate(12deg)}
 
 /* Sektionen */
 section{padding:80px 0}
@@ -187,17 +176,11 @@ footer a{color:var(--gold-hell)}
 </head>
 <body>
 
-<!-- Spielkarten-Symbole (Deutschschweizer Blatt) -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="rose" viewBox="0 0 40 40"><g fill="#a3302c"><circle cx="20" cy="9" r="7"/><circle cx="31" cy="17" r="7"/><circle cx="27" cy="30" r="7"/><circle cx="13" cy="30" r="7"/><circle cx="9" cy="17" r="7"/></g><circle cx="20" cy="20" r="6" fill="#c9a24b"/></symbol>
-  <symbol id="schelle" viewBox="0 0 40 40"><circle cx="20" cy="21" r="15" fill="#c9a24b"/><path d="M5 19h30" stroke="#1c1a16" stroke-width="2.5"/><circle cx="20" cy="28" r="3.5" fill="#1c1a16"/><circle cx="20" cy="5" r="3" fill="#a3302c"/></symbol>
-  <symbol id="schilte" viewBox="0 0 40 40"><path d="M6 6h28v14c0 9-7 14-14 16C13 34 6 29 6 20z" fill="#1d4a37"/><path d="M6 14h28" stroke="#c9a24b" stroke-width="4"/><path d="M20 6v30" stroke="#c9a24b" stroke-width="3"/></symbol>
-  <symbol id="eichel" viewBox="0 0 40 40"><ellipse cx="20" cy="25" rx="10" ry="13" fill="#b8794a"/><path d="M8 17c0-7 5-11 12-11s12 4 12 11z" fill="#5a3a1f"/><path d="M20 6V1" stroke="#5a3a1f" stroke-width="3"/></symbol>
-</svg>
+
 
 <nav>
   <div class="wrap">
-    <a href="#top" class="logo"><svg><use href="#eichel"/></svg><span>Wädi Jasscup</span></a>
+    <a href="#top" class="logo"><span>Wädi Jasscup</span></a>
     <ul>
       <li><a href="#turnier">Turnier</a></li>
       <li><a href="#anmeldung">Anmeldung</a></li>
@@ -216,11 +199,7 @@ footer a{color:var(--gold-hell)}
       <div class="countdown" id="countdown" aria-label="Countdown bis Turnierbeginn"></div>
       <a href="#anmeldung" class="btn">Jetzt anmelden →</a><a href="#ergebnisse" class="btn ghost">Ranglisten</a>
     </div>
-    <div class="karten" aria-hidden="true">
-      <div class="karte"><span class="ecke o">U</span><svg><use href="#schelle"/></svg><span class="ecke u">U</span></div>
-      <div class="karte"><span class="ecke o">A</span><svg><use href="#rose"/></svg><span class="ecke u">A</span></div>
-      <div class="karte"><span class="ecke o">9</span><svg><use href="#schilte"/></svg><span class="ecke u">9</span></div>
-    </div>
+    <div class="karten"></div>
   </div>
 </header>
 
@@ -301,7 +280,7 @@ footer a{color:var(--gold-hell)}
   /* Hero: Pokalfoto */
   if(A.pokalFoto){
     const k = $(".karten");
-    k.classList.add("mit-pokal"); k.removeAttribute("aria-hidden");
+    k.classList.add("mit-pokal");
     k.insertAdjacentHTML("beforeend", `<figure class="pokal"><img src="${esc(A.pokalFoto)}" alt="Der Wanderpokal" class="foto-pokal" data-titel="Der Wanderpokal"><figcaption>Darum geht’s 🏆</figcaption></figure>`);
     const img = k.querySelector(".pokal img");
     const basis = A.pokalFoto.replace(/\.[^./]+$/, "");
