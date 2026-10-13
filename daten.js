@@ -35,18 +35,21 @@ window.TURNIER = {
 
     modus: [
       "Schieber mit Deutschschweizer Karten",
-      "4 Passen à 12 Spiele",
-      "Partner werden pro Passe neu zugelost",
-      "Gewertet wird die Einzelpunktzahl über alle Passen"
+      "4 Runden à 12 Spiele",
+      "Partner werden pro Runde neu zugelost",
+      "Gewertet wird die Einzelpunktzahl über alle Runden",
+      "Kein Wiis",
+      "Match mit 100 Punkten Bonus",
+      "Der Sieger darf den Modus für das kommende Jahr festlegen"
     ],
 
-    preise: "Wanderpokal für den Sieger, Sachpreise für alle",
+    preise: "Wanderpokal und viel Ruhm für den Sieger",
     pokalFoto: "fotos/Pokal.jpg",        // Foto des Wanderpokals (oben auf der Seite), "" = ausblenden
 
     kontakt: {
       name: "OK Wädi Jasscup",
-      email: "info@waedi-jassturnier.ch",
-      telefon: "079 000 00 00"
+      email: "yves.keller79@gmail.com",
+      telefon: "079 212 04 34"
     }
   },
 
