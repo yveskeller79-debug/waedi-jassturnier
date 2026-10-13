@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Wädi Jassturnier</title>
-<meta name="description" content="Das jährliche Wädi Jassturnier in Wädenswil – Infos, Anmeldung und Ranglisten.">
+<title>Wädi Jasscup</title>
+<meta name="description" content="Das jährliche Wädi Jasscup in Wädenswil – Infos, Anmeldung und Ranglisten.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
@@ -130,6 +130,9 @@ form .btn[disabled]{opacity:.6;cursor:wait}
 .ehre.mit-bild{padding:0}
 .ehre.mit-bild .txt{padding:12px 14px 14px}
 .foto{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;background:#e9e1cc;cursor:zoom-in;border:0;padding:0}
+.pokal-platz{position:relative}
+.pokal-platz .foto{filter:grayscale(.35) brightness(.92)}
+.pokal-platz span{position:absolute;left:8px;bottom:8px;background:rgba(19,50,31,.85);color:var(--creme);font-size:.72rem;font-weight:600;letter-spacing:.04em;padding:3px 9px;border-radius:99px;pointer-events:none}
 .foto-leer{width:100%;aspect-ratio:4/5;display:grid;place-items:center;background:repeating-linear-gradient(135deg,#efe8d6 0 10px,#e9e1cc 10px 20px);color:var(--grau);font-size:.8rem;text-align:center}
 .foto-leer svg{width:46px;height:46px;opacity:.55;display:block;margin:0 auto 6px}
 .jahr-top{display:grid;grid-template-columns:230px 1fr;gap:30px;align-items:end;margin-bottom:26px}
@@ -194,7 +197,7 @@ footer a{color:var(--gold-hell)}
 
 <nav>
   <div class="wrap">
-    <a href="#top" class="logo"><svg><use href="#eichel"/></svg><span>Wädi Jassturnier</span></a>
+    <a href="#top" class="logo"><svg><use href="#eichel"/></svg><span>Wädi Jasscup</span></a>
     <ul>
       <li><a href="#turnier">Turnier</a></li>
       <li><a href="#anmeldung">Anmeldung</a></li>
@@ -276,7 +279,7 @@ footer a{color:var(--gold-hell)}
 <footer id="kontakt">
   <div class="wrap">
     <div><h3>Kontakt</h3><div id="kontakt-info"></div></div>
-    <div><h3>Wädi Jassturnier</h3><div>Seit <span id="seit"></span> jedes Jahr in Wädenswil.</div></div>
+    <div><h3>Wädi Jasscup</h3><div>Seit <span id="seit"></span> jedes Jahr in Wädenswil.</div></div>
   </div>
 </footer>
 
@@ -308,7 +311,7 @@ footer a{color:var(--gold-hell)}
   }
 
   /* Hero */
-  $("#h-ausgabe").textContent = `${A.ausgabe}. Wädi Jassturnier`;
+  $("#h-ausgabe").textContent = `${A.ausgabe}. Wädi Jasscup`;
   $("#h-titel").innerHTML = datum(A.datum, {day:"numeric", month:"long"}) + " <em>" + datum(A.datum, {year:"numeric"}) + "</em>";
   $("#h-sub").textContent = `${datum(A.datum,{weekday:"long"})}, ab ${start} Uhr · ${A.ort.name}, ${A.ort.adresse.split(",").pop().trim()}`;
 
@@ -430,17 +433,23 @@ footer a{color:var(--gold-hell)}
   }).filter(Boolean);
   const mitRangliste = archiv.filter(j => (j.rangliste||[]).length);
   const pokal = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>';
+  // Kein Siegerfoto → Pokalfoto als Platzhalter; fehlt auch das → gestreifter Platzhalter
+  const leer = `<div class="foto-leer"><div>${pokal}Foto folgt</div></div>`;
+  const pokalPlatz = () => A.pokalFoto
+    ? `<div class="pokal-platz"><img class="foto" src="${esc(A.pokalFoto)}" alt="Der Wanderpokal" loading="lazy" data-titel="Der Wanderpokal" data-platzhalter="1" onerror="fotoFehler(this)"><span>Foto folgt</span></div>`
+    : leer;
   // Probiert bei fehlendem Foto andere Schreibweisen der Endung (.jpg/.JPG/.jpeg/.png)
   window.fotoFehler = img => {
     const basis = img.dataset.basis || (img.dataset.basis = img.getAttribute("src").replace(/\.[^./]+$/, ""));
     const endungen = [".jpg", ".JPG", ".jpeg", ".JPEG", ".png", ".PNG"];
     const i = Number(img.dataset.versuch || 0);
-    if(i < endungen.length){ img.dataset.versuch = i + 1; img.src = basis + endungen[i]; }
-    else img.outerHTML = `<div class="foto-leer"><div>${pokal}Foto folgt</div></div>`;
+    if(i < endungen.length){ img.dataset.versuch = i + 1; img.src = basis + endungen[i]; return; }
+    const ziel = img.closest(".pokal-platz") || img;
+    ziel.outerHTML = img.dataset.platzhalter ? leer : pokalPlatz();
   };
   const bild = (src, titel) => src
     ? `<img class="foto" src="${esc(src)}" alt="${esc(titel)}" loading="lazy" data-titel="${esc(titel)}" onerror="fotoFehler(this)">`
-    : `<div class="foto-leer"><div>${pokal}Foto folgt</div></div>`;
+    : pokalPlatz();
   const titel = {}; sieger.forEach(x => titel[x.name] = (titel[x.name]||0) + 1);
   const rekord = Object.entries(titel).sort((a,b) => b[1]-a[1])[0];
   const pg = D.prognose;

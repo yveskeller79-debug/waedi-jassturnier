@@ -1,5 +1,5 @@
 // =====================================================================
-//  WÄDI JASSTURNIER – DATEN
+//  WÄDI JASSCUP – DATEN
 //  Nur diese Datei muss jedes Jahr angepasst werden, nie die index.html.
 //  Datumsformat: "JJJJ-MM-TT"  ·  Zeiten: "HH:MM"
 // =====================================================================
@@ -10,7 +10,7 @@ window.TURNIER = {
   //  AKTUELLES TURNIER
   // ---------------------------------------------------------------
   aktuell: {
-    ausgabe: 12,                         // 12. Wädi Jassturnier (seit 2015 jährlich)
+    ausgabe: 12,                         // 12. Wädi Jasscup (seit 2015 jährlich)
     datum: "2026-11-14",
     anmeldeschluss: "2026-11-14",
     anmeldungOffen: true,                // false = Formular wird ausgeblendet
@@ -44,7 +44,7 @@ window.TURNIER = {
     pokalFoto: "fotos/Pokal.jpg",        // Foto des Wanderpokals (oben auf der Seite), "" = ausblenden
 
     kontakt: {
-      name: "OK Wädi Jassturnier",
+      name: "OK Wädi Jasscup",
       email: "info@waedi-jassturnier.ch",
       telefon: "079 000 00 00"
     }
@@ -95,7 +95,7 @@ window.TURNIER = {
         { rang:  8, name: "Vera Stahel",       punkte: 3852 },
         { rang:  9, name: "Bobby Stahel",      punkte: 3815 },
         { rang: 10, name: "Stefan Füchslin",   punkte: 3755 },
-        { rang: 11, name: "Patrik Schlageter", punkte: 3751 },
+        { rang: 11, name: "Patrick Schlageter",punkte: 3751 },
         { rang: 12, name: "Fabienne Weber",    punkte: 3729 },
         { rang: 13, name: "Yves Keller",       punkte: 3622 },
         { rang: 14, name: "Marc Gonzales",     punkte: 3589 },
