@@ -14,7 +14,7 @@ window.TURNIER = {
     datum: "2026-11-21",
     anmeldeschluss: "2026-11-14",
     anmeldungOffen: true,                // false = Formular wird ausgeblendet
-    maxTeilnehmende: 48,
+    maxTeilnehmende: 0,                  // 0 = unbeschränkt, sonst Anzahl Plätze (danach Warteliste)
 
     ort: {
       name: "Restaurant Beispiel",
@@ -65,10 +65,13 @@ window.TURNIER = {
   // ---------------------------------------------------------------
   //  ERGEBNISSE VERGANGENER JAHRE (BEISPIELDATEN – ersetzen)
   //  Neues Jahr einfach oben einfügen.
+  //  siegerFoto: Pfad zum Foto im Ordner "fotos" des GitHub-Repos,
+  //  z. B. "fotos/2025.jpg". Weglassen oder "" = Platzhalter "Foto folgt".
   // ---------------------------------------------------------------
   archiv: [
     {
       jahr: 2025, ausgabe: 7, ort: "Restaurant Beispiel, Wädenswil", teilnehmende: 44,
+      siegerFoto: "fotos/2025.jpg",
       rangliste: [
         { rang: 1, name: "Reto Bachmann",   punkte: 4486 },
         { rang: 2, name: "Ursula Keller",   punkte: 4412 },
@@ -82,6 +85,7 @@ window.TURNIER = {
     },
     {
       jahr: 2024, ausgabe: 6, ort: "Kulturhaus Beispiel, Wädenswil", teilnehmende: 40,
+      siegerFoto: "fotos/2024.jpg",
       rangliste: [
         { rang: 1, name: "Ursula Keller",   punkte: 4521 },
         { rang: 2, name: "Beat Brunner",    punkte: 4433 },
@@ -95,6 +99,7 @@ window.TURNIER = {
     },
     {
       jahr: 2023, ausgabe: 5, ort: "Restaurant Beispiel, Wädenswil", teilnehmende: 36,
+      siegerFoto: "fotos/2023.jpg",
       rangliste: [
         { rang: 1, name: "Ursula Keller",   punkte: 4398 },
         { rang: 2, name: "Hans Weber",      punkte: 4377 },
