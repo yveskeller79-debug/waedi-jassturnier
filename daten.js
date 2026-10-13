@@ -41,6 +41,7 @@ window.TURNIER = {
     ],
 
     preise: "Wanderpokal für den Sieger, Sachpreise für alle",
+    pokalFoto: "fotos/Pokal.jpg",        // Foto des Wanderpokals (oben auf der Seite), "" = ausblenden
 
     kontakt: {
       name: "OK Wädi Jassturnier",
