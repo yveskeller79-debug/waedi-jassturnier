@@ -41,7 +41,6 @@ window.TURNIER = {
       "Gewertet wird die Einzelpunktzahl über alle Passen"
     ],
 
-    startgeld: "CHF 30.– inkl. Znacht",
     preise: "Wanderpokal für den Sieger, Sachpreise für alle",
 
     kontakt: {
@@ -55,11 +54,11 @@ window.TURNIER = {
   //  ANMELDUNG
   //  scriptUrl: Web-App-URL des Google Apps Script
   //  (beginnt mit https://script.google.com/macros/s/…/exec).
-  //  Leer lassen → Anmeldung öffnet stattdessen eine E-Mail an kontakt.email.
+  //  Leer lassen → Formular zeigt einen Hinweis statt zu senden.
   //  belegungAnzeigen: true = "32 von 48 Plätzen belegt" auf der Website
   // ---------------------------------------------------------------
   anmeldung: {
-    scriptUrl: "",
+    scriptUrl: "https://script.google.com/macros/s/AKfycbzOyCBLfj5wYIH9ZWeWl98OImmJpT5uZfpfAWzJeiEmIwsRVtXHu3pAC39ff-AN3QynEQ/exec",
     belegungAnzeigen: true
   },
 

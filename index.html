@@ -218,12 +218,9 @@ footer a{color:var(--gold-hell)}
           <div class="feld"><label for="nachname">Nachname</label><input id="nachname" name="Nachname" required autocomplete="family-name"></div>
           <div class="feld"><label for="email">E-Mail</label><input id="email" name="E-Mail" type="email" required autocomplete="email"></div>
           <div class="feld"><label for="tel">Telefon <span class="opt">(optional)</span></label><input id="tel" name="Telefon" type="tel" autocomplete="tel"></div>
-          <div class="feld"><label for="ort">Wohnort <span class="opt">(optional)</span></label><input id="ort" name="Wohnort" autocomplete="address-level2"></div>
-          <div class="feld"><label for="znacht">Znacht</label>
-            <select id="znacht" name="Znacht"><option>Ja, mit Fleisch</option><option>Ja, vegetarisch</option><option>Nein, danke</option></select></div>
           <div class="feld voll"><label for="bem">Bemerkungen <span class="opt">(optional)</span></label><textarea id="bem" name="Bemerkungen"></textarea></div>
           <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <label class="check voll feld" style="flex-direction:row"><input type="checkbox" id="ok" required> <span>Ich nehme zur Kenntnis, dass das Startgeld vor Ort bar oder per TWINT bezahlt wird und mein Name in der Rangliste erscheint.</span></label>
+          <label class="check voll feld" style="flex-direction:row"><input type="checkbox" id="ok" required> <span>Ich nehme zur Kenntnis, dass mein Name in der Rangliste erscheint.</span></label>
           <div class="meldung" id="meldung" role="status"></div>
           <button class="btn" type="submit" id="senden">Anmeldung absenden</button>
         </form>
@@ -298,8 +295,8 @@ footer a{color:var(--gold-hell)}
       ${A.ort.kartenLink ? `<p style="margin-top:8px"><a href="${esc(A.ort.kartenLink)}" target="_blank" rel="noopener">Karte öffnen ↗</a></p>` : ""}</div>
     <div class="info"><div class="ic">${ic.karte}</div><h3>Modus</h3>
       <ul>${(A.modus||[]).map(m => `<li>${esc(m)}</li>`).join("")}</ul></div>
-    <div class="info"><div class="ic">${ic.preis}</div><h3>Startgeld & Preise</h3>
-      <p><strong>${esc(A.startgeld)}</strong></p><p style="margin-top:6px">${esc(A.preise)}</p></div>`;
+    <div class="info"><div class="ic">${ic.preis}</div><h3>Preise</h3>
+      <p>${esc(A.preise)}</p></div>`;
   $("#zeitplan").insertAdjacentHTML("beforeend",
     A.zeitplan.map(z => `<div class="zp"><time>${esc(z.zeit)}</time><div>${esc(z.programm)}</div></div>`).join(""));
 
@@ -309,39 +306,69 @@ footer a{color:var(--gold-hell)}
   $("#anm-intro").textContent = offen
     ? `Anmeldung bis ${datum(A.anmeldeschluss, lang)}. Die Plätze sind auf ${A.maxTeilnehmende} Personen beschränkt – es gilt die Reihenfolge der Anmeldungen.`
     : "Die Anmeldung für dieses Jahr ist geschlossen.";
+  const url = D.anmeldung?.scriptUrl;
+  const jahr = A.datum.slice(0,4);
+  const max = Number(A.maxTeilnehmende) || 0;
   $("#anm-seite").innerHTML = `
     <div class="box"><b>${esc(datum(A.anmeldeschluss,{day:"numeric",month:"long"}))}</b><span>Anmeldeschluss</span></div>
-    <div class="box"><b>${esc(A.maxTeilnehmende)} Plätze</b><span>Teilnahme ab 16 Jahren, Einzelanmeldung</span></div>
-    <div class="box"><b>${esc(A.startgeld)}</b><span>Bezahlung vor Ort, bar oder TWINT</span></div>`;
+    <div class="box" id="platz-box"><b id="platz-zahl">${esc(max)} Plätze</b>
+      <div class="balken" id="platz-balken" hidden><i></i></div>
+      <span id="platz-text">Teilnahme ab 16 Jahren, Einzelanmeldung</span></div>`;
+
+  function zeigeBelegung(anzahl){
+    if(!max || !D.anmeldung?.belegungAnzeigen) return;
+    const frei = Math.max(0, max - anzahl);
+    $("#platz-zahl").textContent = frei ? `${frei} ${frei === 1 ? "Platz" : "Plätze"} frei` : "Ausgebucht";
+    $("#platz-balken").hidden = false;
+    $("#platz-balken i").style.width = Math.min(100, anzahl / max * 100) + "%";
+    $("#platz-text").textContent = frei ? `${anzahl} von ${max} Plätzen belegt` : "Weitere Anmeldungen kommen auf die Warteliste";
+    if(!frei && $("#senden")) $("#senden").textContent = "Auf die Warteliste";
+  }
 
   if(!offen){
     $("#anm-form-wrap").innerHTML = `<div class="geschlossen"><h3>Anmeldung geschlossen</h3>
       <p>Kurzfristige Fragen gerne an <a href="mailto:${esc(A.kontakt.email)}">${esc(A.kontakt.email)}</a>.</p></div>`;
   } else {
+    if(url) fetch(`${url}?jahr=${jahr}`).then(r => r.json()).then(d => d.ok && zeigeBelegung(d.anzahl)).catch(() => {});
+
     const form = $("#anm-form"), msg = $("#meldung"), btn = $("#senden");
-    const zeige = (txt, ok) => { msg.textContent = txt; msg.className = "meldung " + (ok ? "ok" : "fehler"); };
+    const zeige = (txt, art) => { msg.textContent = txt; msg.className = "meldung " + art; };
     form.addEventListener("submit", async e => {
       e.preventDefault();
-      if(!form.checkValidity()){ zeige("Bitte Vorname, Nachname und eine gültige E-Mail ausfüllen und die Bestätigung ankreuzen.", false); form.reportValidity(); return; }
+      if(!form.checkValidity()){ zeige("Bitte Vorname, Nachname und eine gültige E-Mail ausfüllen und die Bestätigung ankreuzen.", "fehler"); form.reportValidity(); return; }
       if(form._gotcha.value) return;
       const fd = new FormData(form);
-      fd.append("_subject", `Anmeldung ${A.ausgabe}. Wädi Jassturnier: ${fd.get("Vorname")} ${fd.get("Nachname")}`);
-      const id = D.anmeldung?.formspreeId;
-      if(!id){
-        const body = [...fd.entries()].filter(([k]) => !k.startsWith("_")).map(([k,v]) => `${k}: ${v}`).join("\n");
-        location.href = `mailto:${A.kontakt.email}?subject=${encodeURIComponent(fd.get("_subject"))}&body=${encodeURIComponent(body)}`;
-        zeige("Dein E-Mail-Programm wurde geöffnet – bitte die Nachricht noch absenden.", true);
+      const vorname = fd.get("Vorname");
+
+      if(!url){
+        zeige(`Die Online-Anmeldung ist noch nicht eingerichtet. Bitte melde dich per E-Mail an ${A.kontakt.email}.`, "fehler");
         return;
       }
+
+      const daten = new URLSearchParams(fd);
+      daten.append("jahr", jahr);
+      daten.append("max", max);
+      const label = btn.textContent;
       btn.disabled = true; btn.textContent = "Wird gesendet …";
       try{
-        const r = await fetch(`https://formspree.io/f/${encodeURIComponent(id)}`, {method:"POST", body:fd, headers:{Accept:"application/json"}});
-        if(!r.ok) throw new Error();
-        form.reset();
-        zeige(`Danke, ${fd.get("Vorname")}! Deine Anmeldung ist eingegangen. Du erhältst eine Bestätigung per E-Mail.`, true);
+        const r = await fetch(url, {method:"POST", body:daten});
+        const d = await r.json();
+        if(d.status === "doppelt"){
+          zeige("Mit dieser E-Mail-Adresse ist bereits jemand angemeldet.", "info");
+        } else if(!d.ok){
+          throw new Error();
+        } else if(d.status === "warteliste"){
+          form.reset();
+          zeige(`Danke, ${vorname}! Das Turnier ist ausgebucht – du stehst auf der Warteliste und wirst informiert, sobald ein Platz frei wird.`, "info");
+          zeigeBelegung(max);
+        } else {
+          form.reset();
+          zeige(`Danke, ${vorname}! Deine Anmeldung ist eingegangen. Du erhältst eine Bestätigung per E-Mail.`, "ok");
+          if(typeof d.anzahl === "number") zeigeBelegung(d.anzahl);
+        }
       }catch{
-        zeige(`Das hat nicht geklappt. Bitte melde dich direkt per E-Mail an ${A.kontakt.email}.`, false);
-      }finally{ btn.disabled = false; btn.textContent = "Anmeldung absenden"; }
+        zeige(`Das hat nicht geklappt. Bitte melde dich direkt per E-Mail an ${A.kontakt.email}.`, "fehler");
+      }finally{ btn.disabled = false; if(btn.textContent === "Wird gesendet …") btn.textContent = label; }
     });
   }
 
