@@ -126,6 +126,7 @@ form .btn[disabled]{opacity:.6;cursor:wait}
 .foto{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;background:#e9e1cc;cursor:zoom-in;border:0;padding:0}
 .pokal-platz{position:relative}
 .pokal-platz .foto{filter:grayscale(.35) brightness(.92)}
+.siegerbild .pokal-platz span{display:none}
 .pokal-platz span{position:absolute;left:8px;bottom:8px;background:rgba(19,50,31,.85);color:var(--creme);font-size:.72rem;font-weight:600;letter-spacing:.04em;padding:3px 9px;border-radius:99px;pointer-events:none}
 .foto-leer{width:100%;aspect-ratio:4/5;display:grid;place-items:center;background:repeating-linear-gradient(135deg,#efe8d6 0 10px,#e9e1cc 10px 20px);color:var(--grau);font-size:.8rem;text-align:center}
 .foto-leer svg{width:46px;height:46px;opacity:.55;display:block;margin:0 auto 6px}
@@ -170,6 +171,9 @@ table{width:100%;border-collapse:collapse;background:var(--papier);border:1px so
 th,td{padding:12px 16px;text-align:left}
 th{background:#efe8d6;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--grau)}
 td{border-top:1px solid var(--linie)}
+.tabelle{overflow-x:auto;border-radius:var(--radius)}
+th.runde,td.runde{color:var(--grau);font-weight:400!important}
+@media(max-width:560px){th,td{padding:10px 8px}th.runde,td.runde{font-size:.85rem}}
 td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 tr.top td{font-weight:700}
 
@@ -451,6 +455,7 @@ footer a{color:var(--gold-hell)}
     document.querySelectorAll(".tab").forEach((t,k) => t.setAttribute("aria-selected", k === i));
     const r = [...j.rangliste].sort((a,b) => a.rang - b.rang);
     const p = n => r.find(x => x.rang === n);
+    const rn = [...Array(Math.max(0, ...r.map(x => x.runden?.length || 0))).keys()];
     const stufe = (n) => p(n) ? `<div class="stufe r${n}"><div class="name">${esc(p(n).name)}</div><div class="pkt">${zahl(p(n).punkte)} Pkt.</div><div class="block">${n}</div></div>` : "<div></div>";
     $("#jahr").innerHTML = `
       <p class="jahr-meta">${[j.ausgabe ? j.ausgabe + ". Austragung" : "", esc(j.ort||""), j.teilnehmende ? j.teilnehmende + " Teilnehmende" : ""].filter(Boolean).join(" · ")}</p>
@@ -458,9 +463,9 @@ footer a{color:var(--gold-hell)}
         ${j.siegerFoto && p(1) ? `<figure class="siegerbild" style="margin:0">${bild(j.siegerFoto, `${p(1).name} – Sieger/in ${j.jahr}`)}<figcaption>${esc(p(1).name)}<small>Sieger/in ${j.jahr}</small></figcaption></figure>` : ""}
         <div class="podest">${stufe(2)}${stufe(1)}${stufe(3)}</div>
       </div>
-      <table><thead><tr><th>Rang</th><th>Name</th><th class="num">Punkte</th></tr></thead><tbody>
-        ${r.map(x => `<tr class="${x.rang<=3?"top":""}"><td>${x.rang}.</td><td>${esc(x.name)}</td><td class="num">${zahl(x.punkte)}</td></tr>`).join("")}
-      </tbody></table>`;
+      <div class="tabelle"><table><thead><tr><th>Rang</th><th>Name</th>${rn.map(i => `<th class="num runde">R${i+1}</th>`).join("")}<th class="num">Total</th></tr></thead><tbody>
+        ${r.map(x => `<tr class="${x.rang<=3?"top":""}"><td>${x.rang}.</td><td>${esc(x.name)}</td>${rn.map(i => `<td class="num runde">${x.runden?.[i] != null ? zahl(x.runden[i]) : ""}</td>`).join("")}<td class="num">${zahl(x.punkte)}</td></tr>`).join("")}
+      </tbody></table></div>`;
   }
   if(mitRangliste.length){
     $("#tabs").innerHTML = mitRangliste.map((j,i) => `<button class="tab" role="tab" data-i="${i}">${j.jahr}</button>`).join("");

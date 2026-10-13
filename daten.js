@@ -72,6 +72,7 @@ window.TURNIER = {
   //  siegerFoto: Foto im Ordner "fotos" (z. B. "fotos/2026.jpg"),
   //              weglassen = Platzhalter "Foto folgt"
   //  rangliste:  optional – sobald vorhanden, erscheinen Podest und Tabelle.
+  //              runden: [R1, R2, R3, R4] optional – zeigt die Rundenpunkte in der Tabelle.
   //
   //  Vorlage ab 2026:
   //  {
@@ -109,7 +110,27 @@ window.TURNIER = {
     { jahr: 2024, sieger: "Bobby Stahel",       siegerFoto: "fotos/2024.jpg" },
     { jahr: 2023, sieger: "Nina Ambrogio",       siegerFoto: "fotos/2023.jpg" },
     { jahr: 2022, sieger: "Nicolas Baumgartner", siegerFoto: "fotos/2022.jpg" },
-    { jahr: 2021, sieger: "Florian Stahel",     siegerFoto: "fotos/2021.jpg" },
+    {
+      jahr: 2021, sieger: "Florian Stahel", siegerFoto: "fotos/2021.jpg", teilnehmende: 16,
+      rangliste: [
+        { rang:  1, name: "Florian Stahel",    runden: [1461, 1177, 911, 948], punkte: 4497 },
+        { rang:  2, name: "Patrik Schlageter", runden: [1134, 1263, 986, 1037], punkte: 4420 },
+        { rang:  3, name: "Vera Stahel",       runden: [1113, 1263, 998, 993], punkte: 4367 },
+        { rang:  4, name: "Yves Keller",             runden: [1461, 807, 1073, 889], punkte: 4230 },
+        { rang:  5, name: "André Zollinger",   runden: [1134, 995, 998, 1037], punkte: 4164 },
+        { rang:  6, name: "Joni",              runden: [871, 929, 1163, 1095], punkte: 4058 },
+        { rang:  7, name: "Bobby Stahel",      runden: [773, 1127, 1073, 993], punkte: 3966 },
+        { rang:  8, name: "Philipp Strickler",  runden: [723, 1177, 911, 1095], punkte: 3906 },
+        { rang:  9, name: "Angelika Küng",     runden: [992, 1127, 884, 889], punkte: 3892 },
+        { rang: 10, name: "Jill Schlageter",              runden: [992, 721, 1163, 995], punkte: 3871 },
+        { rang: 11, name: "Oliver Küng",       runden: [1113, 957, 884, 889], punkte: 3843 },
+        { rang: 12, name: "Nina Ambrogio",     runden: [1092, 721, 986, 995], punkte: 3794 },
+        { rang: 13, name: "Karin Solèr",       runden: [1092, 807, 1000, 891], punkte: 3790 },
+        { rang: 14, name: "Stefan Füchslin",   runden: [871, 929, 998, 948], punkte: 3746 },
+        { rang: 15, name: "Simon Notter",             runden: [773, 995, 1000, 891], punkte: 3659 },
+        { rang: 16, name: "Sandro",            runden: [723, 957, 998, 889], punkte: 3567 }
+      ]
+    },
     { jahr: 2020, sieger: "Patrik Schlageter",  siegerFoto: "fotos/2020.jpg" },
     { jahr: 2019, sieger: "Yves Keller",        siegerFoto: "fotos/2019.jpg" },
     { jahr: 2018, sieger: "Barbara Füchslin",   siegerFoto: "fotos/2018.jpg" },
