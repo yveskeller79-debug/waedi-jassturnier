@@ -87,14 +87,14 @@ window.TURNIER = {
       rangliste: [
         { rang:  1, name: "Karin Solèr",       punkte: 4702 },
         { rang:  2, name: "Angelika Küng",     punkte: 4237 },
-        { rang:  3, name: "Christa Fuchs",     punkte: 4110 },
+        { rang:  3, name: "Christa Füchslin",   punkte: 4110 },
         { rang:  4, name: "Marc Weber",        punkte: 4100 },
         { rang:  5, name: "André Zollinger",   punkte: 3981 },
         { rang:  6, name: "Philippe Lenherr",  punkte: 3883 },
         { rang:  7, name: "Oliver Küng",       punkte: 3859 },
         { rang:  8, name: "Vera Stahel",       punkte: 3852 },
         { rang:  9, name: "Bobby Stahel",      punkte: 3815 },
-        { rang: 10, name: "Stefan Fuchs",      punkte: 3755 },
+        { rang: 10, name: "Stefan Füchslin",   punkte: 3755 },
         { rang: 11, name: "Patrik Schlageter", punkte: 3751 },
         { rang: 12, name: "Fabienne Weber",    punkte: 3729 },
         { rang: 13, name: "Yves Keller",       punkte: 3622 },
@@ -104,7 +104,7 @@ window.TURNIER = {
       ]
     },
     { jahr: 2024, sieger: "Bobby Stahel",       siegerFoto: "fotos/2024.jpg" },
-    { jahr: 2023, sieger: "Nina",               siegerFoto: "fotos/2023.jpg" },
+    { jahr: 2023, sieger: "Nina Ambrogio",       siegerFoto: "fotos/2023.jpg" },
     { jahr: 2022, sieger: "Nicolas Baumgartner", siegerFoto: "fotos/2022.jpg" },
     { jahr: 2021, sieger: "Florian Stahel",     siegerFoto: "fotos/2021.jpg" },
     { jahr: 2020, sieger: "Patrick Schlageter", siegerFoto: "fotos/2020.jpg" },
@@ -121,7 +121,7 @@ window.TURNIER = {
   // ---------------------------------------------------------------
   prognose: {
     jahr: 2999,
-    name: "Fuchs",
+    name: "Stefan Füchslin",
     foto: "fotos/2999.jpg",
     text: "Gemäss aktueller Hochrechnung. Es gibt Hoffnung. 🦊"
   }
