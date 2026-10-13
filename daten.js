@@ -63,51 +63,39 @@ window.TURNIER = {
   },
 
   // ---------------------------------------------------------------
-  //  ERGEBNISSE VERGANGENER JAHRE (BEISPIELDATEN – ersetzen)
+  //  ERGEBNISSE / EHRENTAFEL
   //  Neues Jahr einfach oben einfügen.
-  //  siegerFoto: Pfad zum Foto im Ordner "fotos" des GitHub-Repos,
-  //  z. B. "fotos/2025.jpg". Weglassen oder "" = Platzhalter "Foto folgt".
+  //  sieger:     Name der Siegerin / des Siegers
+  //  siegerFoto: Foto im Ordner "fotos" (z. B. "fotos/2026.jpg"),
+  //              weglassen = Platzhalter "Foto folgt"
+  //  rangliste:  optional – sobald vorhanden, erscheinen Podest und Tabelle.
+  //
+  //  Vorlage ab 2026:
+  //  {
+  //    jahr: 2026, sieger: "Name", siegerFoto: "fotos/2026.jpg",
+  //    ort: "Restaurant …, Wädenswil", teilnehmende: 40,
+  //    rangliste: [
+  //      { rang: 1, name: "Name", punkte: 4500 },
+  //      { rang: 2, name: "Name", punkte: 4400 },
+  //      { rang: 3, name: "Name", punkte: 4300 }
+  //    ]
+  //  },
   // ---------------------------------------------------------------
   archiv: [
-    {
-      jahr: 2025, ausgabe: 7, ort: "Restaurant Beispiel, Wädenswil", teilnehmende: 44,
-      siegerFoto: "fotos/2025.jpg",
-      rangliste: [
-        { rang: 1, name: "Reto Bachmann",   punkte: 4486 },
-        { rang: 2, name: "Ursula Keller",   punkte: 4412 },
-        { rang: 3, name: "Marco Steiner",   punkte: 4398 },
-        { rang: 4, name: "Heidi Zollinger", punkte: 4351 },
-        { rang: 5, name: "Peter Hauser",    punkte: 4307 },
-        { rang: 6, name: "Sandra Frei",     punkte: 4288 },
-        { rang: 7, name: "Thomas Huber",    punkte: 4251 },
-        { rang: 8, name: "Beat Brunner",    punkte: 4213 }
-      ]
-    },
-    {
-      jahr: 2024, ausgabe: 6, ort: "Kulturhaus Beispiel, Wädenswil", teilnehmende: 40,
-      siegerFoto: "fotos/2024.jpg",
-      rangliste: [
-        { rang: 1, name: "Ursula Keller",   punkte: 4521 },
-        { rang: 2, name: "Beat Brunner",    punkte: 4433 },
-        { rang: 3, name: "Reto Bachmann",   punkte: 4402 },
-        { rang: 4, name: "Monika Graf",     punkte: 4366 },
-        { rang: 5, name: "Marco Steiner",   punkte: 4322 },
-        { rang: 6, name: "Hans Weber",      punkte: 4290 },
-        { rang: 7, name: "Sandra Frei",     punkte: 4247 },
-        { rang: 8, name: "Peter Hauser",    punkte: 4198 }
-      ]
-    },
-    {
-      jahr: 2023, ausgabe: 5, ort: "Restaurant Beispiel, Wädenswil", teilnehmende: 36,
-      siegerFoto: "fotos/2023.jpg",
-      rangliste: [
-        { rang: 1, name: "Ursula Keller",   punkte: 4398 },
-        { rang: 2, name: "Hans Weber",      punkte: 4377 },
-        { rang: 3, name: "Thomas Huber",    punkte: 4341 },
-        { rang: 4, name: "Reto Bachmann",   punkte: 4310 },
-        { rang: 5, name: "Heidi Zollinger", punkte: 4279 },
-        { rang: 6, name: "Beat Brunner",    punkte: 4233 }
-      ]
-    }
-  ]
+    { jahr: 2025, sieger: "Karin",    siegerFoto: "fotos/2025.jpg" },
+    { jahr: 2024, sieger: "Bobby",    siegerFoto: "fotos/2024.jpg" },
+    { jahr: 2023, sieger: "Nina",     siegerFoto: "fotos/2023.jpg" },
+    { jahr: 2021, sieger: "Schlagi",  siegerFoto: "fotos/2021.jpg" }
+  ],
+
+  // ---------------------------------------------------------------
+  //  PROGNOSE (Spezialkachel am Ende der Ehrentafel)
+  //  Löschen oder auf null setzen, sobald der Fuchs tatsächlich gewinnt.
+  // ---------------------------------------------------------------
+  prognose: {
+    jahr: 2999,
+    name: "Fuchs",
+    foto: "fotos/2999.jpg",
+    text: "Gemäss aktueller Hochrechnung. Es gibt Hoffnung. 🦊"
+  }
 };

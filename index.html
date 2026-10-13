@@ -117,7 +117,7 @@ form .btn[disabled]{opacity:.6;cursor:wait}
 .geschlossen h3{font-size:1.5rem;margin-bottom:8px}
 
 /* Ergebnisse */
-.ehren{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-bottom:44px}
+.ehren{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-bottom:44px;align-items:start}
 @media(max-width:520px){.ehren{grid-template-columns:1fr 1fr}}
 .ehre{background:var(--papier);border:1px solid var(--linie);border-radius:12px;padding:16px;position:relative;overflow:hidden}
 .ehre.mit-bild{padding:0}
@@ -147,6 +147,9 @@ form .btn[disabled]{opacity:.6;cursor:wait}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
 .tab{background:transparent;border:1px solid var(--linie);padding:9px 18px;border-radius:99px;font:inherit;font-weight:600;cursor:pointer;color:var(--tinte)}
 .tab[aria-selected="true"]{background:var(--filz);color:var(--creme);border-color:var(--filz)}
+.ehre.prognose{border:2px dashed var(--gold)}
+.ehre.prognose .foto{filter:sepia(.25)}
+.stempel{position:absolute;top:12px;right:-30px;z-index:2;transform:rotate(35deg);background:var(--rot);color:#fff;font-weight:700;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;padding:4px 36px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .jahr-meta{color:var(--grau);margin-bottom:24px}
 
 .podest{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:14px;align-items:end;margin-bottom:26px;max-width:720px}
@@ -253,7 +256,7 @@ footer a{color:var(--gold-hell)}
     <div class="kopf">
       <span class="label">Ergebnisse</span>
       <h2>Ehrentafel & Ranglisten</h2>
-      <p>Alle Siegerinnen und Sieger seit dem ersten Turnier sowie die Ranglisten der vergangenen Jahre.</p>
+      <p id="erg-intro"></p>
     </div>
     <div class="ehren" id="ehren"></div>
     <div class="tabs" role="tablist" id="tabs"></div>
@@ -400,7 +403,13 @@ footer a{color:var(--gold-hell)}
 
   /* Ergebnisse */
   const archiv = [...(D.archiv||[])].sort((a,b) => b.jahr - a.jahr);
-  const sieger = archiv.map(j => ({jahr:j.jahr, foto:j.siegerFoto, s:j.rangliste.find(r => r.rang === 1)})).filter(x => x.s);
+  // Sieger: aus "sieger" oder aus Rang 1 der Rangliste
+  const sieger = archiv.map(j => {
+    const r1 = (j.rangliste||[]).find(r => r.rang === 1);
+    const name = j.sieger || r1?.name;
+    return name ? {jahr:j.jahr, foto:j.siegerFoto, name, punkte:r1?.punkte} : null;
+  }).filter(Boolean);
+  const mitRangliste = archiv.filter(j => (j.rangliste||[]).length);
   const pokal = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>';
   // Probiert bei fehlendem Foto andere Schreibweisen der Endung (.jpg/.JPG/.jpeg/.png)
   window.fotoFehler = img => {
@@ -413,15 +422,20 @@ footer a{color:var(--gold-hell)}
   const bild = (src, titel) => src
     ? `<img class="foto" src="${esc(src)}" alt="${esc(titel)}" loading="lazy" data-titel="${esc(titel)}" onerror="fotoFehler(this)">`
     : `<div class="foto-leer"><div>${pokal}Foto folgt</div></div>`;
-  const titel = {}; sieger.forEach(x => titel[x.s.name] = (titel[x.s.name]||0) + 1);
+  const titel = {}; sieger.forEach(x => titel[x.name] = (titel[x.name]||0) + 1);
   const rekord = Object.entries(titel).sort((a,b) => b[1]-a[1])[0];
+  const pg = D.prognose;
   $("#ehren").innerHTML =
     (rekord && rekord[1] > 1 ? `<div class="ehre rekord">${pokal}<div class="j">${rekord[1]}×</div><div class="n">${esc(rekord[0])}</div><div class="p">Rekordsieger/in</div></div>` : "") +
-    sieger.map(x => `<div class="ehre mit-bild">${bild(x.foto, `${x.s.name} – Sieger ${x.jahr}`)}<div class="txt"><div class="j">${x.jahr}</div><div class="n">${esc(x.s.name)}</div><div class="p">${zahl(x.s.punkte)} Punkte</div></div></div>`).join("");
-  $("#seit").textContent = archiv.length ? Math.min(...archiv.map(j => j.jahr)) - ((archiv.find(j=>j.jahr===Math.min(...archiv.map(k=>k.jahr)))?.ausgabe||1)-1) : A.datum.slice(0,4);
+    sieger.map(x => `<div class="ehre mit-bild">${bild(x.foto, `${x.name} – Sieger/in ${x.jahr}`)}<div class="txt"><div class="j">${x.jahr}</div><div class="n">${esc(x.name)}</div>${x.punkte ? `<div class="p">${zahl(x.punkte)} Punkte</div>` : ""}</div></div>`).join("") +
+    (pg ? `<div class="ehre mit-bild prognose"><span class="stempel">Prognose</span>${bild(pg.foto, `${pg.name} – Sieger ${pg.jahr}`)}<div class="txt"><div class="j">${esc(pg.jahr)}</div><div class="n">${esc(pg.name)}</div><div class="p">${esc(pg.text||"")}</div></div></div>` : "");
+  $("#seit").textContent = archiv.length ? Math.min(...archiv.map(j => j.jahr)) : A.datum.slice(0,4);
+  $("#erg-intro").textContent = mitRangliste.length
+    ? "Alle Siegerinnen und Sieger sowie die Ranglisten der vergangenen Jahre."
+    : `Alle Siegerinnen und Sieger. Komplette Ranglisten gibt es ab ${A.datum.slice(0,4)}.`;
 
   function zeigeJahr(i){
-    const j = archiv[i];
+    const j = mitRangliste[i];
     document.querySelectorAll(".tab").forEach((t,k) => t.setAttribute("aria-selected", k === i));
     const r = [...j.rangliste].sort((a,b) => a.rang - b.rang);
     const p = n => r.find(x => x.rang === n);
@@ -429,19 +443,19 @@ footer a{color:var(--gold-hell)}
     $("#jahr").innerHTML = `
       <p class="jahr-meta">${j.ausgabe ? j.ausgabe + ". Austragung · " : ""}${esc(j.ort||"")}${j.teilnehmende ? " · " + j.teilnehmende + " Teilnehmende" : ""}</p>
       <div class="${j.siegerFoto ? "jahr-top" : ""}">
-        ${j.siegerFoto && p(1) ? `<figure class="siegerbild" style="margin:0">${bild(j.siegerFoto, `${p(1).name} – Sieger ${j.jahr}`)}<figcaption>${esc(p(1).name)}<small>Sieger ${j.jahr}</small></figcaption></figure>` : ""}
+        ${j.siegerFoto && p(1) ? `<figure class="siegerbild" style="margin:0">${bild(j.siegerFoto, `${p(1).name} – Sieger/in ${j.jahr}`)}<figcaption>${esc(p(1).name)}<small>Sieger/in ${j.jahr}</small></figcaption></figure>` : ""}
         <div class="podest">${stufe(2)}${stufe(1)}${stufe(3)}</div>
       </div>
       <table><thead><tr><th>Rang</th><th>Name</th><th class="num">Punkte</th></tr></thead><tbody>
         ${r.map(x => `<tr class="${x.rang<=3?"top":""}"><td>${x.rang}.</td><td>${esc(x.name)}</td><td class="num">${zahl(x.punkte)}</td></tr>`).join("")}
       </tbody></table>`;
   }
-  if(archiv.length){
-    $("#tabs").innerHTML = archiv.map((j,i) => `<button class="tab" role="tab" data-i="${i}">${j.jahr}</button>`).join("");
+  if(mitRangliste.length){
+    $("#tabs").innerHTML = mitRangliste.map((j,i) => `<button class="tab" role="tab" data-i="${i}">${j.jahr}</button>`).join("");
     $("#tabs").addEventListener("click", e => { const b = e.target.closest(".tab"); if(b) zeigeJahr(+b.dataset.i); });
     zeigeJahr(0);
   } else {
-    $("#jahr").innerHTML = "<p>Noch keine Ergebnisse erfasst.</p>";
+    $("#tabs").hidden = true; $("#jahr").hidden = true;
   }
 
   /* Lightbox für Siegerfotos */
