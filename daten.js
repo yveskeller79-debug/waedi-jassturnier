@@ -10,28 +10,27 @@ window.TURNIER = {
   //  AKTUELLES TURNIER
   // ---------------------------------------------------------------
   aktuell: {
-    ausgabe: 8,                          // 8. Wädi Jassturnier
-    datum: "2026-11-21",
+    ausgabe: 12,                         // 12. Wädi Jassturnier (seit 2015 jährlich)
+    datum: "2026-11-14",
     anmeldeschluss: "2026-11-14",
     anmeldungOffen: true,                // false = Formular wird ausgeblendet
     maxTeilnehmende: 0,                  // 0 = unbeschränkt, sonst Anzahl Plätze (danach Warteliste)
 
     ort: {
-      name: "Restaurant Beispiel",
-      adresse: "Seestrasse 1, 8820 Wädenswil",
-      kartenLink: "https://www.google.com/maps/search/?api=1&query=Seestrasse+1+8820+Wädenswil",
-      hinweis: "5 Gehminuten vom Bahnhof Wädenswil. Wenige Parkplätze vorhanden."
+      name: "Restaurant Gambrinus",
+      adresse: "Wädenswil",
+      kartenLink: "https://www.google.com/maps/search/?api=1&query=Restaurant+Gambrinus+Wädenswil",
+      hinweis: "Der definitive Austragungsort wird noch bekannt gegeben – aktuell ist das Restaurant Gambrinus vorgesehen."
     },
 
+    //  zeit = Beginn, bis = optionales Ende
     zeitplan: [
-      { zeit: "13:00", programm: "Türöffnung & Check-in" },
-      { zeit: "13:30", programm: "Begrüssung und Auslosung" },
-      { zeit: "13:45", programm: "1. Passe" },
-      { zeit: "15:00", programm: "2. Passe" },
-      { zeit: "16:15", programm: "Pause mit Kaffee & Kuchen" },
-      { zeit: "16:45", programm: "3. Passe" },
-      { zeit: "18:00", programm: "4. Passe" },
-      { zeit: "19:30", programm: "Znacht, Rangverkündigung & Preisverteilung" }
+      { zeit: "17:00", bis: "17:45", programm: "Eintreffen, Apéro & letzte Ausreden vorbereiten" },
+      { zeit: "17:45",               programm: "Auslosung, kurze Regelkunde und dann geht’s los." },
+      { zeit: "18:00", bis: "19:30", programm: "Runde 1 & 2 – jetzt wird um Ruhm und Ehre gekämpft." },
+      { zeit: "19:30", bis: "20:30", programm: "Essen & Verschnaufpause – die Karten dürfen kurz ruhen." },
+      { zeit: "20:30", bis: "22:00", programm: "Runde 3 & 4 – jetzt zeigt sich, wer wirklich das Zeug zum Jasskönig oder zur Jasskönigin hat." },
+      { zeit: "22:15",               programm: "Rangverkündigung – Zeit für Ruhm, Ehre und die besten Ausreden des Abends." }
     ],
 
     modus: [
@@ -82,10 +81,37 @@ window.TURNIER = {
   //  },
   // ---------------------------------------------------------------
   archiv: [
-    { jahr: 2025, sieger: "Karin",    siegerFoto: "fotos/2025.jpg" },
-    { jahr: 2024, sieger: "Bobby",    siegerFoto: "fotos/2024.jpg" },
-    { jahr: 2023, sieger: "Nina",     siegerFoto: "fotos/2023.jpg" },
-    { jahr: 2021, sieger: "Schlagi",  siegerFoto: "fotos/2021.jpg" }
+    {
+      jahr: 2025, sieger: "Karin Solèr", siegerFoto: "fotos/2025.jpg", teilnehmende: 16,
+      rangliste: [
+        { rang:  1, name: "Karin Solèr",       punkte: 4702 },
+        { rang:  2, name: "Angelika Küng",     punkte: 4237 },
+        { rang:  3, name: "Christa Fuchs",     punkte: 4110 },
+        { rang:  4, name: "Marc Weber",        punkte: 4100 },
+        { rang:  5, name: "André Zollinger",   punkte: 3981 },
+        { rang:  6, name: "Philippe Lenherr",  punkte: 3883 },
+        { rang:  7, name: "Oliver Küng",       punkte: 3859 },
+        { rang:  8, name: "Vera Stahel",       punkte: 3852 },
+        { rang:  9, name: "Bobby Stahel",      punkte: 3815 },
+        { rang: 10, name: "Stefan Fuchs",      punkte: 3755 },
+        { rang: 11, name: "Patrik Schlageter", punkte: 3751 },
+        { rang: 12, name: "Fabienne Weber",    punkte: 3729 },
+        { rang: 13, name: "Yves Keller",       punkte: 3622 },
+        { rang: 14, name: "Marc Gonzales",     punkte: 3589 },
+        { rang: 15, name: "Matthias Kost",     punkte: 3588 },
+        { rang: 16, name: "Barbara Knobel",    punkte: 3315 }
+      ]
+    },
+    { jahr: 2024, sieger: "Bobby Stahel",       siegerFoto: "fotos/2024.jpg" },
+    { jahr: 2023, sieger: "Nina",               siegerFoto: "fotos/2023.jpg" },
+    { jahr: 2022, sieger: "Nicolas Baumgartner", siegerFoto: "fotos/2022.jpg" },
+    { jahr: 2021, sieger: "Florian Stahel",     siegerFoto: "fotos/2021.jpg" },
+    { jahr: 2020, sieger: "Patrick Schlageter", siegerFoto: "fotos/2020.jpg" },
+    { jahr: 2019, sieger: "Yves Keller",        siegerFoto: "fotos/2019.jpg" },
+    { jahr: 2018, sieger: "Barbara Füchslin",   siegerFoto: "fotos/2018.jpg" },
+    { jahr: 2017, sieger: "Katya Füchslin",     siegerFoto: "fotos/2017.jpg" },
+    { jahr: 2016, sieger: "Bobby Stahel",       siegerFoto: "fotos/2016.jpg" },
+    { jahr: 2015, sieger: "Oliver Küng",        siegerFoto: "fotos/2015.jpg" }
   ],
 
   // ---------------------------------------------------------------

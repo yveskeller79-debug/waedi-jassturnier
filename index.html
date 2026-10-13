@@ -78,7 +78,7 @@ section{padding:80px 0}
 
 .zeitplan{background:var(--papier);border:1px solid var(--linie);border-radius:var(--radius);padding:10px 26px}
 .zeitplan h3{font-size:1.3rem;padding:16px 0 6px}
-.zp{display:grid;grid-template-columns:80px 1fr;gap:16px;padding:13px 0;border-top:1px dashed var(--linie);align-items:baseline}
+.zp{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:13px 0;border-top:1px dashed var(--linie);align-items:baseline}
 .zp:first-of-type{border-top:0}
 .zp time{font-family:"Fraunces",serif;font-weight:700;color:var(--rot);font-size:1.1rem}
 
@@ -138,7 +138,7 @@ form .btn[disabled]{opacity:.6;cursor:wait}
 .ehre .j{font-family:"Fraunces",serif;font-weight:900;font-size:1.5rem;color:var(--filz)}
 .ehre .n{font-weight:600}
 .ehre .p{font-size:.85rem;color:var(--grau)}
-.ehre.rekord{background:var(--filz);color:var(--creme);border-color:var(--filz);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:4px}
+.ehre.rekord{align-self:stretch;background:var(--filz);color:var(--creme);border-color:var(--filz);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:4px}
 .ehre.rekord svg{width:64px;height:64px;color:var(--gold);margin-bottom:8px}
 .ehre.rekord .j{font-size:2.4rem}
 .ehre.rekord .j{color:var(--gold)}
@@ -221,7 +221,7 @@ footer a{color:var(--gold-hell)}
       <h2>Wann, wo und wie</h2>
     </div>
     <div class="infos" id="infos"></div>
-    <div class="zeitplan" id="zeitplan"><h3>Zeitplan</h3></div>
+    <div class="zeitplan" id="zeitplan"><h3>Der Fahrplan zum Jass-Ruhm</h3></div>
   </div>
 </section>
 
@@ -321,7 +321,7 @@ footer a{color:var(--gold-hell)}
     <div class="info"><div class="ic">${ic.preis}</div><h3>Preise</h3>
       <p>${esc(A.preise)}</p></div>`;
   $("#zeitplan").insertAdjacentHTML("beforeend",
-    A.zeitplan.map(z => `<div class="zp"><time>${esc(z.zeit)}</time><div>${esc(z.programm)}</div></div>`).join(""));
+    A.zeitplan.map(z => `<div class="zp"><time>${esc(z.zeit)}${z.bis ? "–" + esc(z.bis) : ""}</time><div>${esc(z.programm)}</div></div>`).join(""));
 
   /* Anmeldung */
   const schluss = new Date(A.anmeldeschluss + "T23:59:59");
@@ -417,7 +417,7 @@ footer a{color:var(--gold-hell)}
     const endungen = [".jpg", ".JPG", ".jpeg", ".JPEG", ".png", ".PNG"];
     const i = Number(img.dataset.versuch || 0);
     if(i < endungen.length){ img.dataset.versuch = i + 1; img.src = basis + endungen[i]; }
-    else img.outerHTML = '<div class="foto-leer">Foto fehlt</div>';
+    else img.outerHTML = `<div class="foto-leer"><div>${pokal}Foto folgt</div></div>`;
   };
   const bild = (src, titel) => src
     ? `<img class="foto" src="${esc(src)}" alt="${esc(titel)}" loading="lazy" data-titel="${esc(titel)}" onerror="fotoFehler(this)">`
@@ -441,7 +441,7 @@ footer a{color:var(--gold-hell)}
     const p = n => r.find(x => x.rang === n);
     const stufe = (n) => p(n) ? `<div class="stufe r${n}"><div class="name">${esc(p(n).name)}</div><div class="pkt">${zahl(p(n).punkte)} Pkt.</div><div class="block">${n}</div></div>` : "<div></div>";
     $("#jahr").innerHTML = `
-      <p class="jahr-meta">${j.ausgabe ? j.ausgabe + ". Austragung · " : ""}${esc(j.ort||"")}${j.teilnehmende ? " · " + j.teilnehmende + " Teilnehmende" : ""}</p>
+      <p class="jahr-meta">${[j.ausgabe ? j.ausgabe + ". Austragung" : "", esc(j.ort||""), j.teilnehmende ? j.teilnehmende + " Teilnehmende" : ""].filter(Boolean).join(" · ")}</p>
       <div class="${j.siegerFoto ? "jahr-top" : ""}">
         ${j.siegerFoto && p(1) ? `<figure class="siegerbild" style="margin:0">${bild(j.siegerFoto, `${p(1).name} – Sieger/in ${j.jahr}`)}<figcaption>${esc(p(1).name)}<small>Sieger/in ${j.jahr}</small></figcaption></figure>` : ""}
         <div class="podest">${stufe(2)}${stufe(1)}${stufe(3)}</div>
