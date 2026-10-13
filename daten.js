@@ -53,11 +53,14 @@ window.TURNIER = {
 
   // ---------------------------------------------------------------
   //  ANMELDUNG
-  //  formspreeId: ID von formspree.io (z. B. "xyzabcd").
+  //  scriptUrl: Web-App-URL des Google Apps Script
+  //  (beginnt mit https://script.google.com/macros/s/…/exec).
   //  Leer lassen → Anmeldung öffnet stattdessen eine E-Mail an kontakt.email.
+  //  belegungAnzeigen: true = "32 von 48 Plätzen belegt" auf der Website
   // ---------------------------------------------------------------
   anmeldung: {
-    formspreeId: ""
+    scriptUrl: "",
+    belegungAnzeigen: true
   },
 
   // ---------------------------------------------------------------
